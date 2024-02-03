@@ -1,5 +1,6 @@
 package com.example.mscustomer.model.response;
 
+import com.example.mscustomer.enums.CustomerStatus;
 import liquibase.pro.packaged.B;
 import lombok.*;
 
@@ -15,6 +16,7 @@ public class CustomerResponse {
     private String name;
     private String surname;
     private String pinCode;
+    private CustomerStatus status;
     private LocalDateTime createdAt;
 
 }
