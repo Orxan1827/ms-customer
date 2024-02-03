@@ -1,6 +1,5 @@
 package com.example.mscustomer.controller;
 
-import com.example.mscustomer.entity.Customer;
 import com.example.mscustomer.model.request.CustomerRequest;
 import com.example.mscustomer.model.response.CustomerResponse;
 import com.example.mscustomer.repository.CustomerRepository;
@@ -8,7 +7,6 @@ import com.example.mscustomer.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -17,9 +15,8 @@ import java.util.List;
 @RequestMapping("/api/customers")
 public class CustomerController {
     private final CustomerService customerService;
-    private final CustomerRepository customerRepository;
 
-    @PostMapping
+    @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveCustomer(@Valid @RequestBody CustomerRequest request) {
         customerService.saveCustomer(request);

@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
+@EqualsAndHashCode
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,11 +33,9 @@ public class Customer {
     private String surname;
 
     @Column(name = "pinCode", unique = true)
-    @UniquePinCode
     private String pinCode;
 
     @Column(name = "createdAt")
-    @CreatedDate
     private LocalDateTime createdAt;
 
     @Column(name = "status")

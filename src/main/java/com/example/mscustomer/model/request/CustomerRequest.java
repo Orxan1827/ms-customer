@@ -21,8 +21,9 @@ public class CustomerRequest {
     @NotBlank(message = "Surname can not be empty")
     private String surname;
 
-    @UniquePinCode
+
     @Size(min = 5,max = 7)
+    @UniquePinCode
     private String pinCode;
 
     @NotNull(message = "Status can not be null")

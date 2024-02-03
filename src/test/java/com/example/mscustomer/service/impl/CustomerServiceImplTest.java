@@ -70,16 +70,16 @@ class CustomerServiceImplTest {
         updatedCustomer = Customer.builder()
                 .id(1L)
                 .name("orxan")
-                .surname("rustem")
+                .surname("rustemli")
                 .status(ACTIVE)
-                .pinCode("123456")
+                .pinCode("123457")
                 .createdAt(LocalDateTime.now())
                 .build();
 
     }
 
     @Test
-    void whenSaveCustomerCalledValidRequest() {
+    void testWhenSaveCustomerCalledValidRequest() {
         Mockito.when(customerMapper.mapRequestToCustomer(customerRequest)).thenReturn(customer);
         Mockito.when(customerRepository.save(any(Customer.class))).thenReturn(customer);
 
@@ -90,7 +90,7 @@ class CustomerServiceImplTest {
     }
 
     @Test
-    void whenGetAllCustomerCalled_itShouldReturnCustomerResponseList() {
+    void testWhenGetAllCustomerCalled_itShouldReturnCustomerResponseList() {
         Mockito.when(customerRepository.findAll()).thenReturn(customers);
         Mockito.when(customerMapperStruct.customerToResponse(customer)).thenReturn(customerResponse);
 
@@ -104,7 +104,7 @@ class CustomerServiceImplTest {
     }
 
     @Test
-    void whenGetCustomerByPinCodeCalledByValidPinCode_itShouldReturnCustomerResponse() {
+    void testWhenGetCustomerByPinCodeCalledByValidPinCode_itShouldReturnCustomerResponse() {
         Mockito.when(customerRepository.findCustomerByPinCode("123456")).thenReturn(Optional.of(customer));
         Mockito.when(customerMapperStruct.customerToResponse(customer)).thenReturn(customerResponse);
 
@@ -118,7 +118,7 @@ class CustomerServiceImplTest {
     }
 
     @Test
-    void whenGetCustomerByPinCodeCalledByNotExistPinCode_itShouldReturnCustomerNotFound() {
+    void testWhenGetCustomerByPinCodeCalledByNotExistPinCode_itShouldReturnCustomerNotFound() {
         Mockito.when(customerRepository.findCustomerByPinCode("12345678")).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> customerService.getCustomerByPinCode("12345678"));
@@ -128,7 +128,7 @@ class CustomerServiceImplTest {
     }
 
     @Test
-    void whenGetCustomerByIdCalledById_itShouldReturnCustomerResponse() {
+    void testWhenGetCustomerByIdCalledById_itShouldReturnCustomerResponse() {
         Mockito.when(customerRepository.findById(1l)).thenReturn(Optional.of(customer));
         Mockito.when(customerMapperStruct.customerToResponse(customer)).thenReturn(customerResponse);
 
@@ -142,7 +142,7 @@ class CustomerServiceImplTest {
     }
 
     @Test
-    void whenGetCustomerByIdCalledByIdIfCustomerDoesNotExist_itShouldReturnNotFoundException() {
+    void testWhenGetCustomerByIdCalledByIdIfCustomerDoesNotExist_itShouldReturnNotFoundException() {
         Mockito.when(customerRepository.findById(2L)).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> customerService.getCustomerById(2L));
@@ -151,7 +151,7 @@ class CustomerServiceImplTest {
     }
 
     @Test
-    void whenDeleteCustomerCalledById_itShouldDeleteCustomer() {
+    void testWhenDeleteCustomerCalledById_itShouldDeleteCustomer() {
         Mockito.when(customerRepository.findById(1l)).thenReturn(Optional.of(customer));
         Mockito.doNothing().when(customerRepository).delete(customer);
 
@@ -167,7 +167,9 @@ class CustomerServiceImplTest {
         Mockito.when(customerMapper.mapRequestToCustomer(customerRequest)).thenReturn(updatedCustomer);
         Mockito.when(customerRepository.save(updatedCustomer)).thenReturn(updatedCustomer);
 
-        customerService.update(1L,customerRequest);
+        customerService.update(1L, customerRequest);
+
+        assertNotEquals(customer, updatedCustomer);
 
         Mockito.verify(customerRepository, Mockito.times(1)).findById(1L);
         Mockito.verify(customerMapper, Mockito.times(1)).mapRequestToCustomer(customerRequest);
