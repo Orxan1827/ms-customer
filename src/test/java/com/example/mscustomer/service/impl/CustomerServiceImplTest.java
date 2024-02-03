@@ -5,6 +5,7 @@ import com.example.mscustomer.exception.NotFoundException;
 import com.example.mscustomer.mapper.CustomerMapper;
 import com.example.mscustomer.mapper.CustomerMapperStruct;
 import com.example.mscustomer.model.request.CustomerRequest;
+import com.example.mscustomer.model.request.CustomerUpdateRequest;
 import com.example.mscustomer.model.response.CustomerResponse;
 import com.example.mscustomer.repository.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,7 @@ class CustomerServiceImplTest {
     private CustomerMapperStruct customerMapperStruct;
     private CustomerServiceImpl customerService;
     private CustomerRequest customerRequest;
+    private CustomerUpdateRequest customerUpdateRequest;
     private CustomerResponse customerResponse;
     private Customer customer;
     private List<Customer> customers;
@@ -38,43 +40,19 @@ class CustomerServiceImplTest {
 
         customerService = new CustomerServiceImpl(customerRepository, customerMapper, customerMapperStruct);
 
-        customerRequest = CustomerRequest.builder()
-                .name("orxan")
-                .surname("rustem")
-                .status(ACTIVE)
-                .pinCode("123456")
-                .build();
+        customerRequest = CustomerRequest.builder().name("orxan").surname("rustem").status(ACTIVE).pinCode("123456").build();
 
-        customerResponse = CustomerResponse.builder()
-                .id(1L)
-                .name("orxan")
-                .surname("rustem")
-                .pinCode("123456")
-                .createdAt(LocalDateTime.now())
-                .status(ACTIVE)
-                .build();
+        customerUpdateRequest = CustomerUpdateRequest.builder().name("orxan").surname("rustem").status(ACTIVE).build();
 
-        customer = Customer.builder()
-                .id(1L)
-                .name("orxan")
-                .surname("rustem")
-                .status(ACTIVE)
-                .pinCode("123456")
-                .createdAt(LocalDateTime.now())
-                .build();
+        customerResponse = CustomerResponse.builder().id(1L).name("orxan").surname("rustem").pinCode("123456").createdAt(LocalDateTime.now()).status(ACTIVE).build();
+
+        customer = Customer.builder().id(1L).name("orxan").surname("rustem").status(ACTIVE).pinCode("123456").createdAt(LocalDateTime.now()).build();
 
         customers = List.of(customer);
 
         customerResponseList = List.of(customerResponse);
 
-        updatedCustomer = Customer.builder()
-                .id(1L)
-                .name("orxan")
-                .surname("rustemli")
-                .status(ACTIVE)
-                .pinCode("123457")
-                .createdAt(LocalDateTime.now())
-                .build();
+        updatedCustomer = Customer.builder().id(1L).name("orxan").surname("rustemli").status(ACTIVE).pinCode("123457").createdAt(LocalDateTime.now()).build();
 
     }
 
@@ -129,15 +107,15 @@ class CustomerServiceImplTest {
 
     @Test
     void testWhenGetCustomerByIdCalledById_itShouldReturnCustomerResponse() {
-        Mockito.when(customerRepository.findById(1l)).thenReturn(Optional.of(customer));
+        Mockito.when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
         Mockito.when(customerMapperStruct.customerToResponse(customer)).thenReturn(customerResponse);
 
-        CustomerResponse result = customerService.getCustomerById(1l);
+        CustomerResponse result = customerService.getCustomerById(1L);
 
         assertNotNull(result);
         assertEquals(customerResponse, result);
 
-        Mockito.verify(customerRepository, Mockito.times(1)).findById(1l);
+        Mockito.verify(customerRepository, Mockito.times(1)).findById(1L);
         Mockito.verify(customerMapperStruct, Mockito.times(1)).customerToResponse(customer);
     }
 
@@ -157,22 +135,22 @@ class CustomerServiceImplTest {
 
         customerService.deleteCustomer(1L);
 
-        Mockito.verify(customerRepository, Mockito.times(1)).findById(1l);
+        Mockito.verify(customerRepository, Mockito.times(1)).findById(1L);
         Mockito.verify(customerRepository, Mockito.times(1)).delete(customer);
     }
 
     @Test
     void whenUpdateCustomerCalledByIdAndRequest_itShouldUpdateCustomer() {
         Mockito.when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
-        Mockito.when(customerMapper.mapRequestToCustomer(customerRequest)).thenReturn(updatedCustomer);
+        Mockito.when(customerMapper.mapRequestToCustomer(customerUpdateRequest,customer)).thenReturn(updatedCustomer);
         Mockito.when(customerRepository.save(updatedCustomer)).thenReturn(updatedCustomer);
 
-        customerService.update(1L, customerRequest);
+        customerService.update(1L, customerUpdateRequest);
 
         assertNotEquals(customer, updatedCustomer);
 
         Mockito.verify(customerRepository, Mockito.times(1)).findById(1L);
-        Mockito.verify(customerMapper, Mockito.times(1)).mapRequestToCustomer(customerRequest);
+        Mockito.verify(customerMapper, Mockito.times(1)).mapRequestToCustomer(customerUpdateRequest,customer);
         Mockito.verify(customerRepository, Mockito.times(1)).save(updatedCustomer);
     }
 

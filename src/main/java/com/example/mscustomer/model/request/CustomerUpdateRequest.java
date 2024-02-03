@@ -13,18 +13,13 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CustomerRequest {
+public class CustomerUpdateRequest {
 
     @NotBlank(message = "Name can not be empty")
     private String name;
 
     @NotBlank(message = "Surname can not be empty")
     private String surname;
-
-
-    @Size(min = 5, max = 7)
-    @UniquePinCode
-    private String pinCode;
 
     @NotNull(message = "Status can not be null")
     private CustomerStatus status;

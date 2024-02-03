@@ -3,6 +3,7 @@ package com.example.mscustomer.mapper;
 import com.example.mscustomer.entity.Customer;
 import com.example.mscustomer.enums.CustomerStatus;
 import com.example.mscustomer.model.request.CustomerRequest;
+import com.example.mscustomer.model.request.CustomerUpdateRequest;
 import com.example.mscustomer.model.response.CustomerResponse;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ public class CustomerMapper {
                 .build();
     }
 
-    public CustomerResponse mapCustomerToResponse(Customer customer){
+    public CustomerResponse mapCustomerToResponse(Customer customer) {
         return CustomerResponse.builder()
                 .id(customer.getId())
                 .name(customer.getName())
@@ -26,4 +27,16 @@ public class CustomerMapper {
                 .createdAt(customer.getCreatedAt())
                 .build();
     }
+
+    public Customer mapRequestToCustomer(CustomerUpdateRequest request, Customer customer) {
+        if (request.getName() != null)
+            customer.setName(request.getName());
+        if (request.getSurname() != null)
+            customer.setSurname(request.getSurname());
+        if (request.getStatus() != null)
+            customer.setStatus(request.getStatus());
+        return customer;
+    }
+
+
 }

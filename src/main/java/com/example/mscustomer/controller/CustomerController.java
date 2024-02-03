@@ -1,12 +1,14 @@
 package com.example.mscustomer.controller;
 
 import com.example.mscustomer.model.request.CustomerRequest;
+import com.example.mscustomer.model.request.CustomerUpdateRequest;
 import com.example.mscustomer.model.response.CustomerResponse;
 import com.example.mscustomer.repository.CustomerRepository;
 import com.example.mscustomer.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -38,13 +40,13 @@ public class CustomerController {
     }
 
     @DeleteMapping("{id}")
-    public void deleteCustomer(@PathVariable Long id){
+    public void deleteCustomer(@PathVariable Long id) {
         customerService.deleteCustomer(id);
     }
 
     @PutMapping("{id}")
-    public void updateCustomer(@PathVariable Long id, @RequestBody CustomerRequest request){
-        customerService.update(id,request);
+    public void updateCustomer(@PathVariable Long id, @RequestBody CustomerUpdateRequest updateRequest) {
+        customerService.update(id, updateRequest);
     }
 
 

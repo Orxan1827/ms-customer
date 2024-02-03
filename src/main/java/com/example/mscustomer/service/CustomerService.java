@@ -1,7 +1,7 @@
 package com.example.mscustomer.service;
 
-import com.example.mscustomer.entity.Customer;
 import com.example.mscustomer.model.request.CustomerRequest;
+import com.example.mscustomer.model.request.CustomerUpdateRequest;
 import com.example.mscustomer.model.response.CustomerResponse;
 
 import java.util.List;
@@ -12,7 +12,7 @@ public interface CustomerService {
     CustomerResponse getCustomerByPinCode(String pinCode);
     CustomerResponse getCustomerById(Long id);
     void deleteCustomer(Long id);
-    void update(Long id,CustomerRequest request);
+    void update(Long id, CustomerUpdateRequest updateRequest);
 
 
 }

@@ -5,14 +5,17 @@ import com.example.mscustomer.exception.NotFoundException;
 import com.example.mscustomer.mapper.CustomerMapper;
 import com.example.mscustomer.mapper.CustomerMapperStruct;
 import com.example.mscustomer.model.request.CustomerRequest;
+import com.example.mscustomer.model.request.CustomerUpdateRequest;
 import com.example.mscustomer.model.response.CustomerResponse;
 import com.example.mscustomer.repository.CustomerRepository;
 import com.example.mscustomer.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -55,9 +58,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void update(Long id, CustomerRequest request) {
-       Customer customer = customerRepository.findById(id).orElseThrow(NotFoundException::new);
-       Customer updatedCustomer =customerMapper.mapRequestToCustomer(request);
+    public void update(Long id, CustomerUpdateRequest updateRequest) {
+        Customer customer = customerRepository.findById(id).orElseThrow(NotFoundException::new);
+        Customer updatedCustomer = customerMapper.mapRequestToCustomer(updateRequest, customer);
         customerRepository.save(updatedCustomer);
     }
 }
